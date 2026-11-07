@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
-import { decrypt } from '@/lib/crypto';
+import { supabase } from '../../../../lib/supabase';
+import { decrypt } from '../../../../lib/crypto';
 
 export async function GET(req, { params }) {
   try {
