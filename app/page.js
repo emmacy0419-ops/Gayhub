@@ -2,7 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { supabase } from '../lib/supabase';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 export default function Homepage() {
   const [profiles, setProfiles] = useState([]);
@@ -42,26 +47,13 @@ export default function Homepage() {
         {profiles.map((profile) => (
           <div key={profile.id} style={{ border: '1px solid #ddd', borderRadius: '8px', padding: '20px', background: '#fafafa' }}>
             <h2 style={{ margin: '0 0 10px 0' }}>{profile.display_name}, {profile.age}</h2>
-            
-            <p style={{ margin: '5px 0', color: '#555' }}>
-              <strong>Location:</strong> {profile.city}, {profile.country}
-            </p>
-            <p style={{ margin: '5px 0', color: '#555' }}>
-              <strong>Occupation:</strong> {profile.occupation || 'Not specified'}
-            </p>
-            <p style={{ margin: '5px 0', color: '#555' }}>
-              <strong>Status:</strong> {profile.relationship_status}
-            </p>
-            
+            <p style={{ margin: '5px 0', color: '#555' }}><strong>Location:</strong> {profile.city}, {profile.country}</p>
+            <p style={{ margin: '5px 0', color: '#555' }}><strong>Occupation:</strong> {profile.occupation || 'Not specified'}</p>
+            <p style={{ margin: '5px 0', color: '#555' }}><strong>Status:</strong> {profile.relationship_status}</p>
             <div style={{ marginTop: '15px', padding: '10px', background: '#fff', borderLeft: '4px solid #0070f3' }}>
-              <p style={{ margin: 0, fontSize: '14px', fontStyle: 'italic' }}>
-                "Looking for: {profile.reason_for_joining || 'Not specified'}"
-              </p>
+              <p style={{ margin: 0, fontSize: '14px', fontStyle: 'italic' }}>"Looking for: {profile.reason_for_joining || 'Not specified'}"</p>
             </div>
-
-            <Link href={`/profile/${profile.id}`} style={{ display: 'block', textAlign: 'center', marginTop: '20px', padding: '10px', background: 'black', color: 'white', textDecoration: 'none', borderRadius: '5px' }}>
-              View Full Profile
-            </Link>
+            <Link href={`/profile/${profile.id}`} style={{ display: 'block', textAlign: 'center', marginTop: '20px', padding: '10px', background: 'black', color: 'white', textDecoration: 'none', borderRadius: '5px' }}>View Full Profile</Link>
           </div>
         ))}
       </div>
