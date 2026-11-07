@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { supabase } from '@/lib/supabase';
-import { encrypt } from '@/lib/crypto';
+import { supabase } from '../../../../lib/supabase';
+import { encrypt } from '../../../../lib/crypto';
 
 export async function POST(req) {
   try {
