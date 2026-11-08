@@ -18,7 +18,7 @@ export default function Homepage() {
       const { data, error } = await supabase
         .from('profiles')
         .select(`
-          id, display_name, age, occupation, relationship_status, country, city, bio, reason_for_joining,
+          id, display_name, age, occupation, relationship_status, country, city, bio, photo_url, reason_for_joining,
           consent_records ( revoked_at )
         `)
         .eq('is_active', true)
@@ -41,7 +41,6 @@ export default function Homepage() {
   return (
     <div style={{ minHeight: '100vh', background: '#f0f2f5', fontFamily: 'system-ui, -apple-system, sans-serif', paddingBottom: '50px' }}>
       
-      {/* Header */}
       <div style={{ background: '#ffffff', padding: '20px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', textAlign: 'center', marginBottom: '30px' }}>
         <h1 style={{ margin: 0, fontSize: '28px', color: '#1a1a1a', letterSpacing: '-0.5px' }}>GayHub</h1>
         <p style={{ margin: '5px 0 0 0', color: '#666', fontSize: '14px' }}>Find your perfect match worldwide</p>
@@ -58,7 +57,11 @@ export default function Homepage() {
             {profiles.map((profile) => (
               <div key={profile.id} style={{ background: '#ffffff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.08)', transition: 'transform 0.2s', display: 'flex', flexDirection: 'column' }}>
                 
-                {/* Profile Header */}
+                {/* Show Photo if it exists */}
+                {profile.photo_url && (
+                  <img src={profile.photo_url} alt={profile.display_name} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
+                )}
+
                 <div style={{ padding: '24px 24px 15px 24px', borderBottom: '1px solid #f0f0f0' }}>
                   <h2 style={{ margin: '0 0 5px 0', fontSize: '22px', color: '#1a1a1a' }}>{profile.display_name}, {profile.age}</h2>
                   <p style={{ margin: 0, color: '#0070f3', fontSize: '14px', fontWeight: '500' }}>
@@ -66,7 +69,6 @@ export default function Homepage() {
                   </p>
                 </div>
 
-                {/* Profile Details */}
                 <div style={{ padding: '15px 24px', flexGrow: 1 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', fontSize: '14px' }}>
                     <span style={{ color: '#888' }}>Status</span>
@@ -84,7 +86,6 @@ export default function Homepage() {
                   </div>
                 </div>
 
-                {/* Call to Action */}
                 <div style={{ padding: '0 24px 24px 24px' }}>
                   <Link href={`/profile/${profile.id}`} style={{ display: 'block', textAlign: 'center', padding: '14px', background: '#1a1a1a', color: 'white', textDecoration: 'none', borderRadius: '10px', fontWeight: '600', fontSize: '15px', transition: 'background 0.2s' }}>
                     View Full Profile
