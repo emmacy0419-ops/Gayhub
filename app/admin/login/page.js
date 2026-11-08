@@ -15,7 +15,7 @@ export default function AdminLogin() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password }),
     });
-    if (res.ok) router.push('/admin/profile/new');
+    if (res.ok) router.push('/admin/profiles/new');
     else setError('Wrong password bro. Try again.');
   };
 
