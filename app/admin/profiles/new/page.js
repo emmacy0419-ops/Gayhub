@@ -13,7 +13,7 @@ export default function AddProfile() {
     age: '',
     occupation: '',
     relationship_status: 'Single',
-    country: => '',
+    country: '',
     city: '',
     bio: '',
     photo_url: '', // <--- THE PHOTO URL IS HERE
