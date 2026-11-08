@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@supabase/supabase-js';
 
 export default function AddProfile() {
   const router = useRouter();
@@ -10,77 +9,36 @@ export default function AddProfile() {
   const [message, setMessage] = useState('');
 
   const [form, setForm] = useState({
-    display_name: '',
-    age: '',
-    occupation: '',
-    relationship_status: 'Single',
-    country: '',
-    city: '',
-    bio: '',
-    photo_url: '',
-    reason_for_joining: '',
-    contact_method: 'WhatsApp',
-    contact_value: '',
-    consent_method: 'Signed Form',
-    consent_date: new Date().toISOString().split('T')[0],
-    consent_reference: ''
+    display_name: '', age: '', occupation: '', relationship_status: 'Single',
+    country: '', city: '', bio: '', photo_url: '', reason_for_joining: '',
+    contact_method: 'WhatsApp', contact_value: '', consent_method: 'Signed Form',
+    consent_date: new Date().toISOString().split('T')[0], consent_reference: ''
   });
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('Saving directly to database...');
+    setMessage('Saving...');
 
     try {
-      // Create Supabase client directly in the browser
-      const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-      );
+      const res = await fetch('/api/admin/profiles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
 
-      // 1. Save Profile
-      const { data: profileData, error: profileError } = await supabase
-        .from('profiles')
-        .insert([{
-          display_name: form.display_name, 
-          age: parseInt(form.age), 
-          occupation: form.occupation, 
-          relationship_status: form.relationship_status, 
-          country: form.country, 
-          city: form.city, 
-          bio: form.bio, 
-          photo_url: form.photo_url,
-          reason_for_joining: form.reason_for_joining, 
-          contact_method: form.contact_method, 
-          contact_value_encrypted: form.contact_value, // Plain text for now
-        }])
-        .select()
-        .single();
-
-      if (profileError) throw new Error("Profile Error: " + profileError.message);
-
-      // 2. Save Consent
-      const { error: consentError } = await supabase
-        .from('consent_records')
-        .insert([{
-          profile_id: profileData.id, 
-          consent_method: form.consent_method, 
-          consent_date: form.consent_date, 
-          consent_reference: form.consent_reference, 
-          consent_scope: 'Listed on site',
-        }]);
-
-      if (consentError) throw new Error("Consent Error: " + consentError.message);
-
-      setMessage('Profile added successfully!');
-      setForm({ ...form, display_name: '', age: '', occupation: '', country: '', city: '', bio: '', photo_url: '', reason_for_joining: '', contact_value: '', consent_reference: '' });
+      const data = await res.json();
       
+      if (res.ok) {
+        setMessage('Profile added successfully!');
+        setForm({ ...form, display_name: '', age: '', occupation: '', country: '', city: '', bio: '', photo_url: '', reason_for_joining: '', contact_value: '', consent_reference: '' });
+      } else {
+        setMessage('Server Error: ' + data.error);
+      }
     } catch (error) {
-      setMessage('Error: ' + error.message);
+      setMessage('Network Error: Please check your internet connection.');
     } finally {
       setLoading(false);
     }
