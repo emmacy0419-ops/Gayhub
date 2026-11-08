@@ -70,7 +70,9 @@ export default function AddProfile() {
 
           <input name="country" placeholder="Country" value={form.country} onChange={handleChange} style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }} />
           <input name="city" placeholder="City" value={form.city} onChange={handleChange} style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }} />
-          <input name="photo_url" placeholder="Photo URL (Link to an image)" value={form.photo_url} onChange={handleChange} style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }} />
+          
+          {/* THIS IS THE MISSING PHOTO INPUT BOX */}
+          <input name="photo_url" placeholder="Photo URL (e.g. https://i.imgur.com/photo.jpg)" value={form.photo_url} onChange={handleChange} style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }} />
           
           <textarea name="bio" placeholder="Short Bio" value={form.bio} onChange={handleChange} style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd', minHeight: '80px' }} />
           <textarea name="reason_for_joining" placeholder="Reason for joining (What are they looking for?)" value={form.reason_for_joining} onChange={handleChange} style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd', minHeight: '80px' }} />
