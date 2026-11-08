@@ -31,7 +31,7 @@ export async function POST(req) {
       photo_url: body.photo_url,
       reason_for_joining: body.reason_for_joining, 
       contact_method: body.contact_method, 
-      contact_value_encrypted: body.contact_value, // <--- NO ENCRYPTION, SAVING PLAIN TEXT FOR TEST
+      contact_value_encrypted: body.contact_value,
     }]).select().single();
 
     if (profileError) {
