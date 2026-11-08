@@ -30,13 +30,27 @@ export async function POST(req) {
     const encryptedContact = encrypt(body.contact_value);
     
     const { data: profileData, error: profileError } = await supabase.from('profiles').insert([{
-      display_name: body.display_name, age: parseInt(body.age), occupation: body.occupation, relationship_status: body.relationship_status, country: body.country, city: body.city, bio: body.bio, reason_for_joining: body.reason_for_joining, contact_method: body.contact_method, contact_value_encrypted: encryptedContact,
+      display_name: body.display_name, 
+      age: parseInt(body.age), 
+      occupation: body.occupation, 
+      relationship_status: body.relationship_status, 
+      country: body.country, 
+      city: body.city, 
+      bio: body.bio, 
+      photo_url: body.photo_url, // <--- SAVES THE PHOTO HERE
+      reason_for_joining: body.reason_for_joining, 
+      contact_method: body.contact_method, 
+      contact_value_encrypted: encryptedContact,
     }]).select().single();
 
     if (profileError) throw profileError;
     
     const { error: consentError } = await supabase.from('consent_records').insert([{
-      profile_id: profileData.id, consent_method: body.consent_method, consent_date: body.consent_date, consent_reference: body.consent_reference, consent_scope: 'Listed on site',
+      profile_id: profileData.id, 
+      consent_method: body.consent_method, 
+      consent_date: body.consent_date, 
+      consent_reference: body.consent_reference, 
+      consent_scope: 'Listed on site',
     }]);
     
     if (consentError) throw consentError;
