@@ -16,16 +16,18 @@ export default function AddProfile() {
     country: '',
     city: '',
     bio: '',
-    photo_url: '', // <--- THE PHOTO URL IS HERE
+    photo_url: '',
     reason_for_joining: '',
     contact_method: 'WhatsApp',
     contact_value: '',
     consent_method: 'Signed Form',
     consent_date: new Date().toISOString().split('T')[0],
-    consent_reference: '',
+    consent_reference: ''
   });
 
-  const handleChange = (e) setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,7 +37,7 @@ export default function AddProfile() {
     const res = await fetch('/api/admin/profiles', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
+      body: JSON.stringify(form)
     });
 
     const data = await res.json();
@@ -43,7 +45,19 @@ export default function AddProfile() {
 
     if (res.ok) {
       setMessage('Profile added successfully!');
-      setForm({ ...form, display_name: '', age: '', occupation: '', country: '', city: '', bio: '', photo_url: '', reason_for_joining: '', contact_value: '', consent_reference: '' });
+      setForm({ 
+        ...form, 
+        display_name: '', 
+        age: '', 
+        occupation: '', 
+        country: '', 
+        city: '', 
+        bio: '', 
+        photo_url: '', 
+        reason_for_joining: '', 
+        contact_value: '', 
+        consent_reference: '' 
+      });
     } else {
       setMessage('Error: ' + data.error);
     }
@@ -70,11 +84,10 @@ export default function AddProfile() {
 
           <input name="country" placeholder="Country" value={form.country} onChange={handleChange} style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }} />
           <input name="city" placeholder="City" value={form.city} onChange={handleChange} style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }} />
-          
           <input name="photo_url" placeholder="Photo URL (Link to an image)" value={form.photo_url} onChange={handleChange} style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }} />
           
           <textarea name="bio" placeholder="Short Bio" value={form.bio} onChange={handleChange} style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd', minHeight: '80px' }} />
-          <textarea name="reason_for_joining" placeholder="Reason for joining (What are they looking for?)" value={form.reason_for_joining} onChange={handleChange} style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd', minHeight: '80px' }} />
+          <textarea name="reason_for_joining" placeholder="Reason for joining" value={form.reason_for_joining} onChange={handleChange} style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd', minHeight: '80px' }} />
 
           <h3>Contact Info (Will be encrypted)</h3>
           <select name="contact_method" value={form.contact_method} onChange={handleChange} style={{ padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}>
